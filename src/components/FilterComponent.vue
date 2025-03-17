@@ -3,9 +3,10 @@ import { ref } from "vue";
 import { useUserStore } from "../stores/userStore";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
-import Dropdown from "primevue/dropdown";
+import Select from "primevue/select";
 import Button from "primevue/button";
-import { Roles } from "@/types/Role";
+import { RolesEnum } from "@/types/Role";
+import { StatusEnum } from "@/types/Status";
 
 // Store instance
 const store = useUserStore();
@@ -18,8 +19,8 @@ const filters = ref({
 });
 
 // TODO: get available roles from api
-const roles = [...Roles];
-const statuses = ref(["Active", "Inactive"]);
+const roles = [...RolesEnum];
+const statuses = [...StatusEnum];
 
 // Apply filters and fetch users
 const applyFilters = () => {
@@ -39,11 +40,13 @@ const resetFilters = () => {
 
 <template>
   <Card class="mb-4">
+    <template #title>Filter Users</template>
+
     <template #content>
       <div class="flex flex-wrap gap-4 items-center">
         <InputText v-model="filters.name" placeholder="Search by name" class="p-inputtext-sm w-60" />
-        <Dropdown v-model="filters.role" :options="roles" placeholder="Select role" class="w-60" showClear />
-        <Dropdown v-model="filters.status" :options="statuses" placeholder="Select status" class="w-60" showClear />
+        <Select v-model="filters.role" :options="roles" placeholder="Select role" class="w-60" showClear />
+        <Select v-model="filters.status" :options="statuses" placeholder="Select status" class="w-60" showClear />
         <Button label="Apply Filters" icon="pi pi-filter" @click="applyFilters" />
         <Button label="Reset" icon="pi pi-times" severity="secondary" @click="resetFilters" />
       </div>
