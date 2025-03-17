@@ -13,7 +13,10 @@
   ],
   "compilerOptions": {
     "module": "NodeNext",
-    "types": ["./src/types"]
+    "types": ["./src/types"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*"]
 }
