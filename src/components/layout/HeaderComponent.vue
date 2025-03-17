@@ -2,7 +2,8 @@
 import { ref, computed } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter, RouterLink } from "vue-router";
-import Menu from "primevue/menu"
+import Menu from "primevue/menu";
+import Avatar from "primevue/avatar";
 
 const authStore = useAuthStore();
 const router = useRouter();
