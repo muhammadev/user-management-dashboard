@@ -5,6 +5,7 @@ import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
+import { Roles } from "@/types/Role";
 
 // Store instance
 const store = useUserStore();
@@ -17,7 +18,7 @@ const filters = ref({
 });
 
 // TODO: get available roles from api
-const roles = ref(["Admin", "Editor", "User"]);
+const roles = [...Roles];
 const statuses = ref(["Active", "Inactive"]);
 
 // Apply filters and fetch users
