@@ -2,7 +2,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  role: "Admin" | "Manager" | "Viewer";
+  role: Role;
   status: "Active" | "Inactive" | "Suspended";
-  dateJoined: string;
+  created_at: string;
 }
