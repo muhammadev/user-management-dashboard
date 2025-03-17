@@ -1,31 +1,26 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useUserStore } from "@/stores/userStore";
-import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter, RouterLink } from "vue-router";
+import Menu from "primevue/menu"
 
-const userStore = useUserStore();
+const authStore = useAuthStore();
 const router = useRouter();
 
 const darkMode = ref<boolean>(document.documentElement.classList.contains("dark"));
 const userMenu = ref();
 
-const user = computed(() => userStore.singleUser);
+const user = computed(() => authStore.loggedInUser);
 
 const toggleDarkMode = () => {
   darkMode.value = !darkMode.value;
   document.documentElement.classList.toggle("dark", darkMode.value);
 };
 
-const logout = () => {
-  console.log("Logging out...");
-  userStore.singleUser = null;
-  router.push("/login");
-};
-
 const userMenuItems = computed(() => [
   { label: "Profile", icon: "pi pi-user", command: () => router.push("/profile") },
   { separator: true },
-  { label: "Logout", icon: "pi pi-sign-out", command: logout },
+  { label: "Logout", icon: "pi pi-sign-out", command: () => authStore.logout() },
 ]);
 
 const openUserMenu = (event: Event) => {
@@ -49,7 +44,7 @@ const openUserMenu = (event: Event) => {
       <!-- Right Side (User Menu + Dark Mode) -->
       <div class="flex items-center space-x-4">
         <!-- Dark Mode Toggle -->
-        <button @click="toggleDarkMode" class="text-gray-500 dark:text-gray-300 hover:text-primary">
+        <button @click="toggleDarkMode" class="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-primary">
           <i class="pi" :class="darkMode ? 'pi-sun' : 'pi-moon'"></i>
         </button>
 
@@ -61,6 +56,11 @@ const openUserMenu = (event: Event) => {
             <i class="pi pi-chevron-down text-sm"></i>
           </button>
           <Menu ref="userMenu" :model="userMenuItems" popup />
+        </div>
+
+        <!-- Login/Register Links -->
+        <div v-else class="space-x-4">
+          <RouterLink to="/auth/login" class="text-gray-700 dark:text-gray-300 hover:text-primary">Login</RouterLink>
         </div>
       </div>
     </div>
