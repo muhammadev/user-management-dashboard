@@ -2,6 +2,9 @@
 import { RouterView } from "vue-router";
 import ConfirmDialog from "primevue/confirmdialog";
 import Toast from "primevue/toast"
+import { useSessionTimeout } from './composables/useSessionTimeout';
+
+useSessionTimeout();
 </script>
 
 <template>
