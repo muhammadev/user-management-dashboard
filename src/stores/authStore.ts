@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 
 interface authState {
   isLoggedIn: boolean;
-  loggedInUser: UserType | null;
+  loggedInUser: Partial<UserType> | null;
   sessionExpiresAt: ReturnType<typeof Date.now> | null;
 }
 
@@ -14,7 +14,7 @@ export const useAuthStore = defineStore("auth", {
     sessionExpiresAt: null,
   }),
   actions: {
-    login(user: UserType) {
+    login(user: Partial<UserType>) {
       this.isLoggedIn = true;
       this.loggedInUser = user;
       this.sessionExpiresAt = (Date.now() + (60000 * 5)); // 5 minutes only for demo purposes
