@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
-import Dropdown from "primevue/dropdown";
+import Select from "primevue/select";
 import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
@@ -114,14 +114,14 @@ const confirmDelete = () => {
           <!-- Role -->
           <div class="flex flex-col">
             <label for="role" class="text-sm font-medium">Role</label>
-            <Dropdown id="role" v-model="form.role" :options="['Admin', 'User', 'Editor']" placeholder="Select Role"
+            <Select id="role" v-model="form.role" :options="['Admin', 'User', 'Editor']" placeholder="Select Role"
               class="w-full" :disabled="!isEditing" />
           </div>
 
           <!-- Status -->
           <div class="flex flex-col">
             <label for="status" class="text-sm font-medium">Status</label>
-            <Dropdown id="status" v-model="form.status" :options="['Active', 'Inactive', 'Banned']"
+            <Select id="status" v-model="form.status" :options="['Active', 'Inactive', 'Banned']"
               placeholder="Select Status" class="w-full" :disabled="!isEditing" />
           </div>
 

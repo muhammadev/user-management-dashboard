@@ -3,9 +3,9 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
-import type { Role } from '@/types/User';
-import Dropdown from 'primevue/dropdown';
+import Select from 'primevue/select';
 import Button from 'primevue/button';
+import { RolesEnum } from '@/types/Role';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -13,11 +13,7 @@ const authStore = useAuthStore();
 const role = ref<Role>('Viewer');
 const loading = ref(false);
 
-const roles = [
-  { label: 'Admin', value: 'Admin' },
-  { label: 'Manager', value: 'Manager' },
-  { label: 'Viewer', value: 'Viewer' },
-];
+const roles = [...RolesEnum];
 
 async function handleLogin() {
   loading.value = true;
@@ -28,7 +24,7 @@ async function handleLogin() {
     role: role.value,
   };
 
-  authStore.login(user, 'mock-token');
+  authStore.login(user);
   router.push('/');
   loading.value = false;
 }
@@ -40,7 +36,7 @@ async function handleLogin() {
     <form @submit.prevent="handleLogin" class="space-y-4">
       <div class="space-y-2">
         <label for="role">Role (simulate)</label>
-        <Dropdown id="role" v-model="role" :options="roles" optionLabel="label" optionValue="value" class="w-full" />
+        <Select id="role" v-model="role" :options="roles" class="w-full" />
       </div>
       <Button label="Login" type="submit" class="w-full" :loading="loading" />
     </form>
