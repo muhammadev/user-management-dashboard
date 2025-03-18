@@ -16,7 +16,7 @@ export function useSessionTimeout() {
     const now = Date.now();
 
     // give warning before expiration by 1 minute
-    if (now >= (authStore.sessionExpiresAt - 60000) && !isWarned.value) {
+    if (now >= (authStore.sessionExpiresAt - 60 * 1000) && !isWarned.value) {
       toast.add({
         severity: "warn",
         summary: "Warning",
@@ -35,7 +35,7 @@ export function useSessionTimeout() {
 
   onMounted(() => {
     // check if session expired every 5 seconds...
-    interval = setInterval(checkSession, 5000);
+    interval = setInterval(checkSession, 5 * 1000);
 
   })
 

@@ -17,7 +17,7 @@ export const useAuthStore = defineStore("auth", {
     login(user: Partial<UserType>) {
       this.isLoggedIn = true;
       this.loggedInUser = user;
-      this.sessionExpiresAt = (Date.now() + (60000 * 5)); // 5 minutes only for demo purposes
+      this.sessionExpiresAt = (Date.now() + (60 * 1000 * 5)); // 5 minutes only for demo purposes
     },
     logout() {
       this.isLoggedIn = false;
