@@ -1,1 +1,17 @@
-export const mockRoles = ["Admin", "Manager", "Viewer"];
+export const mockRoles = [
+  {
+    id: 1,
+    name: "Admin",
+    permissions: ["read", "write", "delete"],
+  },
+  {
+    id: 2,
+    name: "Manager",
+    permissions: ["read", "write"],
+  },
+  {
+    id: 1,
+    name: "Viewer",
+    permissions: ["read"],
+  },
+]
