@@ -1,4 +1,4 @@
-export const mockRoles = [
+export const mockRoles: Role[] = [
   {
     id: 1,
     name: "Admin",

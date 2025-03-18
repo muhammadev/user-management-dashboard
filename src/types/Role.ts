@@ -1,2 +1,5 @@
-export const RolesEnum = ["Admin", "Manager", "Viewer"] as const;
-export type RoleType = (typeof RolesEnum)[number];
+export type RoleType = {
+  id: number;
+  name: "Admin" | "Manager" | "Viewer";
+  permissions: ("read" | "write" | "delete")[]
+}
