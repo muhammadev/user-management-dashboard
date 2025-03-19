@@ -18,9 +18,9 @@ onMounted(() => {
 
 // Define filter state
 const filters = ref({
-  name: userStore.filters.name || "",
-  role: userStore.filters.role || null as string | null,
-  status: userStore.filters.status || null as string | null,
+  name: userStore.filters.name,
+  role: userStore.filters.role || null,
+  status: userStore.filters.status || null,
 });
 
 const statuses = [...StatusEnum];
@@ -48,7 +48,8 @@ const resetFilters = () => {
     <template #content>
       <div class="flex flex-wrap gap-4 items-center">
         <InputText v-model="filters.name" placeholder="Search by name" class="p-inputtext-sm w-60" />
-        <Select v-model="filters.role" :options="roleStore.roles" placeholder="Select role" class="w-60" showClear />
+        <Select v-model="filters.role" :options="roleStore.roles" option-label="name" placeholder="Select role"
+          class="w-60" showClear />
         <Select v-model="filters.status" :options="statuses" placeholder="Select status" class="w-60" showClear />
         <Button label="Apply Filters" icon="pi pi-filter" @click="applyFilters" />
         <Button label="Reset" icon="pi pi-times" severity="secondary" @click="resetFilters" />

@@ -26,15 +26,14 @@ export const handlers = [
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page")) || 1;
     const pageSize = Number(url.searchParams.get("pageSize")) || 10;
-    // TODO: type the filters
     const filters = JSON.parse(url.searchParams.get("filters") || "");
 
     // filter the total users first
     const filteredUsers = mockUsers.filter(user => {
-      const { name, role, status } = filters;
+      const { name, role, status }: { name: string; role: Role, status: Status } = filters;
 
       return (!name || user.name === name) &&
-        (!role || user.role === role) &&
+        (!role || user.role.id === role.id) &&
         (!status || user.status === status)
     })
 

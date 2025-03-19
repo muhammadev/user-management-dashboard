@@ -10,7 +10,7 @@ interface UserState {
   pageSize: number;
   filters: {
     name: string;
-    role: string | null;
+    role: Role | null;
     status: string | null;
   };
   loading: boolean;
