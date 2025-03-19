@@ -7,8 +7,9 @@ import Select from "primevue/select";
 import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useRoleStore } from "@/stores/roleStore";
+import { StatusEnum } from "@/types/Status";
 
 const { roles } = useRoleStore()
 const userStore = useUserStore();
@@ -24,6 +25,7 @@ const form = ref<Partial<User>>({
   status: null,
 });
 
+const router = useRouter();
 const route = useRoute();
 
 // Fetch user data on mount
@@ -83,6 +85,7 @@ const confirmDelete = () => {
       try {
         await userStore.deleteSingleUser(userStore.singleUser!.id);
         toast.add({ severity: "success", summary: "Deleted", detail: "User removed.", life: 3000 });
+        router.push("/")
       } catch {
         toast.add({ severity: "error", summary: "Error", detail: "Failed to delete user.", life: 3000 });
       }
@@ -124,8 +127,8 @@ const confirmDelete = () => {
           <!-- Status -->
           <div class="flex flex-col">
             <label for="status" class="text-sm font-medium">Status</label>
-            <Select id="status" v-model="form.status" :options="['Active', 'Inactive', 'Banned']"
-              placeholder="Select Status" class="w-full" :disabled="!isEditing" />
+            <Select id="status" v-model="form.status" :options="[...StatusEnum]" placeholder="Select Status"
+              class="w-full" :disabled="!isEditing" />
           </div>
 
           <!-- Buttons -->
