@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useAuthService } from "@/composables/useAuthService";
-import { RouterLink } from "vue-router";
+import { useRouter, RouterLink } from "vue-router";
 import Menu from "primevue/menu";
 import Avatar from "primevue/avatar";
 import { useAuthStore } from "@/stores/authStore";
@@ -17,8 +17,15 @@ const toggleDarkMode = () => {
   document.documentElement.classList.toggle("dark", darkMode.value);
 };
 
+const router = useRouter()
 const userMenuItems = computed(() => [
-  { label: "Logout", icon: "pi pi-sign-out", command: () => authService.logout() },
+  {
+    label: "Logout", icon: "pi pi-sign-out", command: () => {
+      authService.logout().then(() => {
+        router.push("/login")
+      })
+    }
+  },
 ]);
 
 const openUserMenu = (event: Event) => {
@@ -48,7 +55,8 @@ const openUserMenu = (event: Event) => {
         <!-- User Menu -->
         <div v-if="authStore.loggedInUser" class="relative">
           <button @click="openUserMenu" class="flex items-center gap-2 text-gray-700 dark:text-gray-300 cursor-pointer">
-            <Avatar shape="circle" label="U" class="!bg-amber-300 !text-white" />
+            <Avatar shape="circle" :label="authStore.loggedInUser.role.name.split('')[0]"
+              class="!bg-amber-300 !text-white" />
             <span>{{ authStore.loggedInUser.name }}</span>
             <i class="pi pi-chevron-down text-sm"></i>
           </button>
@@ -57,7 +65,7 @@ const openUserMenu = (event: Event) => {
 
         <!-- Login/Register Links -->
         <div v-else>
-          <RouterLink to="/auth/login" class="text-gray-700 dark:text-gray-300 hover:text-primary">Login</RouterLink>
+          <RouterLink to="/login" class="text-gray-700 dark:text-gray-300 hover:text-primary">Login</RouterLink>
         </div>
       </div>
     </div>

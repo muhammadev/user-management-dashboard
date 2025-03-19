@@ -25,6 +25,7 @@ export const handlers = [
 
     const user = await request.json()
 
+    // TODO: handle token expiration and permissions on protected routes
     sessionToken = await new jose.SignJWT({ id: user.id })
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime(TOKEN_EXPIRATION_THRESHOLD)

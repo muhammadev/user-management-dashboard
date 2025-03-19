@@ -57,6 +57,7 @@ const handleSubmit = () => {
       }).catch(() => {
         toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!" });
       });
+      break;
 
     case Action.EditStatus:
       userStore.updateUserStatusBulk(userIDs.value, status.value).then(() => {
@@ -64,6 +65,7 @@ const handleSubmit = () => {
       }).catch(() => {
         toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!" });
       });
+      break;
 
     case Action.Delete:
       userStore.deleteUsersBulk(userIDs.value).then(() => {
@@ -71,6 +73,7 @@ const handleSubmit = () => {
       }).catch(() => {
         toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!" });
       });
+      break;
 
   }
 
@@ -94,7 +97,8 @@ const handleSubmit = () => {
       <!-- if updating user roles -->
       <div v-if="action === Action.EditRole" class="space-y-2">
         <label for="role">Change Users Roles</label>
-        <Select id="role" v-model="role" :options="roleStore.roles" class="w-full" />
+        <Select id="role" v-model="role" :options="roleStore.roles" class="w-full" option-label="name"
+          option-value="id" />
       </div>
 
       <!-- if updating user status -->

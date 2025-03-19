@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const router = createRouter({
@@ -27,21 +26,14 @@ const router = createRouter({
         const authStore = useAuthStore();
 
         if (!authStore.loggedInUser) {
-          next('/auth/login');
+          next('/login');
           return
         }
 
         next();
       }
     },
-    {
-      path: '/auth',
-      name: 'Auth',
-      component: AuthLayout,
-      children: [
-        { path: "login", component: () => import("@/views/auth/LoginView.vue") },
-      ]
-    },
+    { path: "/login", name: "Login", component: () => import("@/views/auth/LoginView.vue") },
   ],
 })
 

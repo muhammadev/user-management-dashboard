@@ -1,6 +1,5 @@
 import api from "@/api/api";
 import { useLoading } from "@/composables/useLoadingService.js";
-import { mockRoles } from "@/mocks/mockData/mockRoles";
 import { defineStore } from "pinia";
 import { useToast } from "primevue";
 
@@ -20,10 +19,10 @@ export const useRoleStore = defineStore("role", {
         setLoading(true);
 
         try {
-          // const response = await api.get("/api/roles")
+          const response = await api.get("/api/roles")
 
-          // const { data }: { data: Role[] } = response;
-          this.roles = mockRoles;
+          const { data }: { data: Role[] } = response;
+          this.roles = data;
 
           resolve();
         } catch (e) {

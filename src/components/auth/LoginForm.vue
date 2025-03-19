@@ -12,13 +12,13 @@ const roleStore = useRoleStore();
 const router = useRouter();
 const toast = useToast();
 
-const role = ref<Role['id']>();
+const role = ref<Role>();
 const loading = ref(false);
 
 onMounted(async () => {
   await roleStore.fetchRoles();
 
-  role.value = roleStore.roles[0].id;
+  role.value = roleStore.roles[0];
 })
 
 async function handleLogin() {
@@ -51,8 +51,7 @@ async function handleLogin() {
     <form @submit.prevent="handleLogin" class="space-y-4">
       <div class="space-y-2">
         <label for="role">Role (simulate)</label>
-        <Select id="role" v-model="role" :options="roleStore.roles" option-label="name" option-value="id"
-          class="w-full" />
+        <Select id="role" v-model="role" :options="roleStore.roles" option-label="name" class="w-full" />
       </div>
       <Button label="Login" type="submit" class="w-full" :loading="loading" />
     </form>

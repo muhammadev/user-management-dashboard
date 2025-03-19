@@ -7,7 +7,7 @@ function getRandomDate(start: Date, end: Date) {
 function assignRandomRole() {
   const randomIndex = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
 
-  return mockRoles[randomIndex].id;
+  return mockRoles[randomIndex];
 }
 
 export const mockUsers: User[] = Array.from({ length: 50 }, (_, i) => ({

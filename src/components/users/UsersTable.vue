@@ -10,17 +10,30 @@ import Column from "primevue/column";
 import Paginator from "primevue/paginator";
 import Select from "primevue/select";
 import Button from "primevue/button";
+import { usePermissionsService } from "@/composables/usePermissionsService";
 
 const userStore = useUserStore();
 const selectedUsers = ref<User[]>([]);
 const toggleActionDialogVisibility = ref<boolean>(false);
 
+// check the user permissions
+const { hasPermission } = usePermissionsService();
+const canWrite = hasPermission('write');
+const canDelete = hasPermission('delete');
+
 const selectedAction = ref<Action>();
-const actions = [
-  { label: "Edit Role", value: Action.EditRole },
-  { label: "Edit Status", value: Action.EditStatus },
-  { label: "Delete", value: Action.Delete }
-];
+const actions = [];
+
+if (canWrite) {
+  actions.push(...[
+    { label: "Edit Role", value: Action.EditRole },
+    { label: "Edit Status", value: Action.EditStatus },
+  ])
+}
+
+if (canDelete) {
+  actions.push({ label: "Delete", value: Action.Delete })
+}
 
 const applyAction = () => {
   toggleActionDialogVisibility.value = true;
@@ -39,8 +52,8 @@ const onPageChange = ({ page, rows: pageSize }: onPageChangeParams) => {
 
 <template>
   <div>
-
-    <div class="flex gap-5 mt-10 mb-4">
+    <!-- Bulk Action (based on user's permissions) -->
+    <div v-if="actions.length" class="flex gap-5 mt-10 mb-4">
       <Select v-model="selectedAction" :options="actions" optionLabel="label" optionValue="value"
         placeholder="Bulk Action" />
 
@@ -50,7 +63,7 @@ const onPageChange = ({ page, rows: pageSize }: onPageChangeParams) => {
     </div>
 
     <DataTable v-model:selection="selectedUsers" :value="userStore.users">
-      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+      <Column v-if="actions.length" selectionMode="multiple" headerStyle="width: 3rem"></Column>
       <Column field="id" header="ID" sortable></Column>
       <Column field="name" header="Name" sortable></Column>
       <Column field="role" header="Role">
