@@ -129,12 +129,23 @@ export const useUserStore = defineStore("user", {
         this.error = null;
 
         try {
+          // Remove users from the list temporarily
+          this.users = this.users.filter(user => !ids.includes(user.id));
+
+          if (!role) {
+            throw new Error("Please provide a valid role.");
+          }
+
           await api.put('/api/users/bulk-update-role', {
             ids,
             role
           })
 
+          // Fetch updated users from the server
           this.fetchUsers();
+
+          console.log(this.users);
+
           resolve();
         } catch (error) {
           this.error = "Something went wrong!";
@@ -175,7 +186,7 @@ export const useUserStore = defineStore("user", {
 
         try {
           await api.post('/api/users/bulk-delete-users', { ids });
-          this.fetchUsers();
+          await this.fetchUsers();
           resolve();
         } catch (error) {
           console.error(error);

@@ -79,6 +79,8 @@ const handleSubmit = () => {
 
   visible.value = false;
 };
+
+defineExpose({ role });
 </script>
 
 <template>
@@ -110,7 +112,7 @@ const handleSubmit = () => {
       <div v-if="action === Action.Delete" class="text-center">
         <h1>Are you sure you want to delete the users: {{
           userIDs.join(",")
-        }}?
+          }}?
         </h1>
         <p class="text-red-600">THIS IS IRREVERSIBLE</p>
       </div>

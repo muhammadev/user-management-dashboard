@@ -48,7 +48,8 @@ const openUserMenu = (event: Event) => {
 
       <div class="flex items-center gap-5">
         <!-- Dark Mode Toggle -->
-        <button @click="toggleDarkMode" class="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-primary">
+        <button id="toggle-button" @click="toggleDarkMode"
+          class="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-primary">
           <i class="pi" :class="darkMode ? 'pi-sun' : 'pi-moon'"></i>
         </button>
 

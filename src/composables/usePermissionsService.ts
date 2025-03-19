@@ -6,6 +6,8 @@ export function usePermissionsService() {
     const { roles } = useRoleStore();
     const { loggedInUser: user } = useAuthStore();
 
+    if (!user || !permission) return false;
+
     const userRole = roles.find(role => role.id === user?.role?.id);
 
     return userRole?.permissions.includes(permission);
