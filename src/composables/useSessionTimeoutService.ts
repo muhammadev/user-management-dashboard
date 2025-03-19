@@ -1,8 +1,10 @@
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from '@/stores/authStore';
 import { useToast } from "primevue";
 import { onMounted, onUnmounted, ref } from "vue"
+import { useAuthService } from './useAuthService';
 
 export function useSessionTimeout() {
+  const authService = useAuthService();
   const authStore = useAuthStore();
   const toast = useToast();
 
@@ -13,10 +15,12 @@ export function useSessionTimeout() {
   const checkSession = () => {
     if (!authStore.sessionExpiresAt) return;
 
-    const now = Date.now();
+    console.log(authStore.sessionExpiresAt)
+
+    const now = Date.now() / 1000; // the time in seconds
 
     // give warning before expiration by 1 minute
-    if (now >= (authStore.sessionExpiresAt - 60 * 1000) && !isWarned.value) {
+    if (now >= (authStore.sessionExpiresAt - 60) && !isWarned.value) {
       toast.add({
         severity: "warn",
         summary: "Warning",
@@ -28,7 +32,7 @@ export function useSessionTimeout() {
     }
 
     if (now >= authStore.sessionExpiresAt) {
-      authStore.logout();
+      authService.logout();
       isWarned.value = false;
     }
   }

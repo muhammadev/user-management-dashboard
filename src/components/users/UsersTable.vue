@@ -12,7 +12,7 @@ import Select from "primevue/select";
 import Button from "primevue/button";
 
 const userStore = useUserStore();
-const selectedUsers = ref<UserType[]>([]);
+const selectedUsers = ref<User[]>([]);
 const toggleActionDialogVisibility = ref<boolean>(false);
 
 const selectedAction = ref<Action>();
@@ -53,7 +53,11 @@ const onPageChange = ({ page, rows: pageSize }: onPageChangeParams) => {
       <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
       <Column field="id" header="ID" sortable></Column>
       <Column field="name" header="Name" sortable></Column>
-      <Column field="role" header="Role"></Column>
+      <Column field="role" header="Role">
+        <template #body="{ data }">
+          {{ data.role.name }}
+        </template>
+      </Column>
       <Column field="status" header="Status"></Column>
       <Column field="created_at" header="Date Joined" sortable>
         <template #body="{ data }">

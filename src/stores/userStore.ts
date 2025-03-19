@@ -4,7 +4,7 @@ import type { RoleType } from "@/types/Role";
 import type { StatusType } from "@/types/Status";
 
 interface UserState {
-  users: UserType[];
+  users: User[];
   totalUsers: number;
   page: number;
   pageSize: number;
@@ -15,7 +15,7 @@ interface UserState {
   };
   loading: boolean;
   error: string | null;
-  singleUser: UserType | null;
+  singleUser: User | null;
 }
 
 export const useUserStore = defineStore("user", {
@@ -77,7 +77,7 @@ export const useUserStore = defineStore("user", {
         this.loading = false;
       }
     },
-    async updateSingleUser(userId: number, userData: Partial<UserType>) {
+    async updateSingleUser(userId: number, userData: Partial<User>) {
       this.loading = true;
       this.error = null;
 

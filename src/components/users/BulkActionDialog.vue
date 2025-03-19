@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
 import { Action } from "@/types/enums";
-import { RolesEnum } from "@/types/Role";
 import { StatusEnum } from '@/types/Status';
 
 import Dialog from "primevue/dialog";
@@ -9,10 +8,11 @@ import Select from "primevue/select";
 import Button from "primevue/button";
 import { useUserStore } from "@/stores/userStore";
 import { useToast } from "primevue/usetoast";
+import { useRoleStore } from "@/stores/roleStore";
 
 const props = defineProps<{
   action: Action;
-  selectedUsers: UserType[];
+  selectedUsers: User[];
   toggleVisibility: boolean;
 }>();
 
@@ -22,11 +22,10 @@ defineEmits<{
 
 const toast = useToast();
 const userStore = useUserStore();
+const roleStore = useRoleStore();
 
-// TODO: get available roles from api
-const roles = [...RolesEnum];
 const statuses = [...StatusEnum];
-const role = ref<Role>(RolesEnum[0])
+const role = ref<Role>();
 const status = ref<Status>(StatusEnum[0])
 
 // const loading = ref(false);
@@ -34,8 +33,12 @@ const visible = ref<boolean>(false);
 const userIDs = ref(props.selectedUsers.map(u => u.id))
 
 
-onMounted(() => {
+onMounted(async () => {
   visible.value = props.toggleVisibility;
+
+  await roleStore.fetchRoles();
+
+  role.value = roleStore.roles[0];
 })
 
 watch(() => props.toggleVisibility, (isVisible) => {
@@ -52,21 +55,21 @@ const handleSubmit = () => {
       userStore.updateUserRolesBulk(userIDs.value, role.value).then(() => {
         toast.add({ severity: "success", summary: "Success", detail: "Roles updated!", life: 3000 });
       }).catch(() => {
-        toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!", life: 3000 });
+        toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!" });
       });
 
     case Action.EditStatus:
       userStore.updateUserStatusBulk(userIDs.value, status.value).then(() => {
         toast.add({ severity: "success", summary: "Success", detail: "Status updated!", life: 3000 });
       }).catch(() => {
-        toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!", life: 3000 });
+        toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!" });
       });
 
     case Action.Delete:
       userStore.deleteUsersBulk(userIDs.value).then(() => {
         toast.add({ severity: "success", summary: "Success", detail: "Users Deleted Successfully!", life: 3000 });
       }).catch(() => {
-        toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!", life: 3000 });
+        toast.add({ severity: "error", summary: "Error", detail: "Something went wrong!" });
       });
 
   }
@@ -91,7 +94,7 @@ const handleSubmit = () => {
       <!-- if updating user roles -->
       <div v-if="action === Action.EditRole" class="space-y-2">
         <label for="role">Change Users Roles</label>
-        <Select id="role" v-model="role" :options="roles" class="w-full" />
+        <Select id="role" v-model="role" :options="roleStore.roles" class="w-full" />
       </div>
 
       <!-- if updating user status -->

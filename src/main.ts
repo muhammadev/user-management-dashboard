@@ -1,6 +1,6 @@
 import './assets/main.css'
 
-import { createApp } from 'vue'
+import { createApp, markRaw } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from "primevue/config";
 import Aura from '@primeuix/themes/aura';
@@ -9,6 +9,13 @@ import ToastService from 'primevue/toastservice';
 
 import App from './App.vue'
 import router from './router'
+
+// register router with pinia
+const pinia = createPinia()
+pinia.use(({ store }) => {
+  store.router = markRaw(router);
+})
+
 
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
@@ -24,7 +31,7 @@ async function enableMocking() {
 enableMocking().then(() => {
   const app = createApp(App)
 
-  app.use(createPinia())
+  app.use(pinia)
   app.use(router)
   app.use(PrimeVue, {
     theme: {

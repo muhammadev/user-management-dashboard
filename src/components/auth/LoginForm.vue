@@ -1,32 +1,47 @@
 <script setup lang="ts">
-// Logic & Imports first
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/authStore';
+import { onMounted, ref } from 'vue';
+import { useAuthService } from '@/composables/useAuthService';
+import { useRoleStore } from '@/stores/roleStore';
 import Select from 'primevue/select';
 import Button from 'primevue/button';
-import { RolesEnum } from '@/types/Role';
+import { useRouter } from 'vue-router';
+import { useToast } from "primevue";
 
+const authService = useAuthService();
+const roleStore = useRoleStore();
 const router = useRouter();
-const authStore = useAuthStore();
+const toast = useToast();
 
-const role = ref<Role>('Viewer');
+const role = ref<Role['id']>();
 const loading = ref(false);
 
-const roles = [...RolesEnum];
+onMounted(async () => {
+  await roleStore.fetchRoles();
+
+  role.value = roleStore.roles[0].id;
+})
 
 async function handleLogin() {
   loading.value = true;
-  await new Promise((res) => setTimeout(res, 600));
-
   const user = {
-    name: "John Doe",
+    id: Number(Math.random().toString().split(".")[1]), // mocking a random id
     role: role.value,
   };
 
-  authStore.login(user);
-  router.push('/');
-  loading.value = false;
+  authService.login(user)
+    .then(() => {
+      router.push("/")
+    })
+    .catch(e => {
+      console.error(e);
+      toast.add({
+        severity: "error",
+        summary: "Error",
+        detail: "Something went wrong!"
+      })
+    }).finally(() => {
+      loading.value = false;
+    })
 }
 </script>
 
@@ -36,7 +51,8 @@ async function handleLogin() {
     <form @submit.prevent="handleLogin" class="space-y-4">
       <div class="space-y-2">
         <label for="role">Role (simulate)</label>
-        <Select id="role" v-model="role" :options="roles" class="w-full" />
+        <Select id="role" v-model="role" :options="roleStore.roles" option-label="name" option-value="id"
+          class="w-full" />
       </div>
       <Button label="Login" type="submit" class="w-full" :loading="loading" />
     </form>

@@ -1,4 +1,4 @@
-import { User } from './User';
+import { UserType } from './User';
 import { PaginatedResponse, ApiResponse } from "./ApiResponse";
 import { UserStoreState } from "./Store";
 import { CreateUserRequest, UpdateUserRequest, DeleteUserRequest } from "./ApiRequests";
@@ -7,7 +7,7 @@ import { RoleType } from "./Role"
 import { StatusType } from "./Status"
 
 declare global {
-  type UserType = User;
+  type User = UserType;
   type Role = RoleType;
   type Status = StatusType;
   type PaginatedApiResponse<T> = PaginatedResponse<T>;

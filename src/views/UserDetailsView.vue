@@ -16,7 +16,7 @@ const confirm = useConfirm();
 const isEditing = ref(false);
 const loading = ref(false);
 const formError = ref<string | null>(null);
-const form = ref<Partial<UserType>>({
+const form = ref<Partial<User>>({
   name: "",
   role: null,
   status: null,
@@ -41,10 +41,11 @@ onMounted(async () => {
 // Computed property for loading state
 const isLoading = computed(() => userStore.loading);
 
+// TODO: use vee-validate
 // Form validation
 const validateForm = () => {
   if (!form.value.name.trim()) return "Name is required.";
-  if (!form.value.role.trim()) return "Role is required.";
+  if (!form.value.role) return "Role is required.";
   if (!form.value.status.trim()) return "Status is required.";
   return null;
 };
@@ -127,7 +128,7 @@ const confirmDelete = () => {
 
           <!-- Buttons -->
           <div class="flex justify-between mt-4">
-            <Button v-if="isEditing" label="Cancel" icon="pi pi-times" class="p-button-text"
+            <Button v-if="isEditing" label="Cancel" icon="pi pi-times" severity="secondary"
               @click="isEditing = false" />
             <Button v-if="isEditing" label="Save Changes" icon="pi pi-check" class="p-button-success"
               @click="saveChanges" :loading="loading" />

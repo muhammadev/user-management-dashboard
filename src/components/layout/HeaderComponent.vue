@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useAuthStore } from "@/stores/authStore";
-import { useRouter, RouterLink } from "vue-router";
+import { useAuthService } from "@/composables/useAuthService";
+import { RouterLink } from "vue-router";
 import Menu from "primevue/menu";
 import Avatar from "primevue/avatar";
+import { useAuthStore } from "@/stores/authStore";
 
+const authService = useAuthService();
 const authStore = useAuthStore();
-const router = useRouter();
 
 const darkMode = ref<boolean>(document.documentElement.classList.contains("dark"));
 const userMenu = ref();
-
-const user = computed(() => authStore.loggedInUser);
 
 const toggleDarkMode = () => {
   darkMode.value = !darkMode.value;
@@ -19,9 +18,7 @@ const toggleDarkMode = () => {
 };
 
 const userMenuItems = computed(() => [
-  { label: "Profile", icon: "pi pi-user", command: () => router.push("/profile") },
-  { separator: true },
-  { label: "Logout", icon: "pi pi-sign-out", command: () => authStore.logout() },
+  { label: "Logout", icon: "pi pi-sign-out", command: () => authService.logout() },
 ]);
 
 const openUserMenu = (event: Event) => {
@@ -38,29 +35,28 @@ const openUserMenu = (event: Event) => {
       </RouterLink>
 
       <!-- Navigation Links -->
-      <nav class="hidden md:flex space-x-6">
+      <nav class="hidden md:flex gap-4">
         <RouterLink to="/" class="text-gray-700 dark:text-gray-300 hover:text-primary">Home</RouterLink>
       </nav>
 
-      <!-- Right Side (User Menu + Dark Mode) -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center gap-5">
         <!-- Dark Mode Toggle -->
         <button @click="toggleDarkMode" class="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-primary">
           <i class="pi" :class="darkMode ? 'pi-sun' : 'pi-moon'"></i>
         </button>
 
         <!-- User Menu -->
-        <div v-if="user" class="relative">
-          <button @click="openUserMenu" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
-            <Avatar shape="circle" label="U" class="bg-primary text-white" />
-            <span>{{ user.name }}</span>
+        <div v-if="authStore.loggedInUser" class="relative">
+          <button @click="openUserMenu" class="flex items-center gap-2 text-gray-700 dark:text-gray-300 cursor-pointer">
+            <Avatar shape="circle" label="U" class="!bg-amber-300 !text-white" />
+            <span>{{ authStore.loggedInUser.name }}</span>
             <i class="pi pi-chevron-down text-sm"></i>
           </button>
           <Menu ref="userMenu" :model="userMenuItems" popup />
         </div>
 
         <!-- Login/Register Links -->
-        <div v-else class="space-x-4">
+        <div v-else>
           <RouterLink to="/auth/login" class="text-gray-700 dark:text-gray-300 hover:text-primary">Login</RouterLink>
         </div>
       </div>

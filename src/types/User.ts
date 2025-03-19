@@ -1,8 +1,8 @@
-export interface User {
+export interface UserType {
   id: number;
   name: string;
-  email: string;
-  role: Role;
-  status: "Active" | "Inactive" | "Suspended";
-  created_at: string;
+  role: Role['id'];
+  status: "Active" | "Inactive";
+  created_at: Date;
+  sessionToken?: string | null;
 }

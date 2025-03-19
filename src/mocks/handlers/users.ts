@@ -1,6 +1,6 @@
 import { delay, http, HttpResponse, type PathParams } from 'msw';
 import { mockUsers } from "../mockData/mockUsers"
-import { RolesEnum } from '../../types/Role';
+import { mockRoles } from "../mockData/mockRoles"
 import { StatusEnum } from '@/types/Status';
 
 const delayInRange = Math.floor(Math.random() * (800 - 300 + 1)) + 300;
@@ -26,6 +26,7 @@ export const handlers = [
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page")) || 1;
     const pageSize = Number(url.searchParams.get("pageSize")) || 10;
+    // TODO: type the filters
     const filters = JSON.parse(url.searchParams.get("filters") || "");
 
     // filter the total users first
@@ -73,7 +74,7 @@ export const handlers = [
       });
     }
 
-    if (!RolesEnum.includes(role)) {
+    if (!mockRoles.includes(role)) {
       return new HttpResponse(null, {
         status: 400,
       })
@@ -81,7 +82,7 @@ export const handlers = [
 
     mockUsers.forEach((user, i) => {
       if (ids.includes(user.id)) {
-        mockUsers[i].role = role;
+        mockUsers[i].role = role.id;
       }
     })
 
