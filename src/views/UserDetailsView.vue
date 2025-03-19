@@ -8,7 +8,9 @@ import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 import { useRoute } from "vue-router";
+import { useRoleStore } from "@/stores/roleStore";
 
+const { roles } = useRoleStore()
 const userStore = useUserStore();
 const toast = useToast();
 const confirm = useConfirm();
@@ -115,8 +117,8 @@ const confirmDelete = () => {
           <!-- Role -->
           <div class="flex flex-col">
             <label for="role" class="text-sm font-medium">Role</label>
-            <Select id="role" v-model="form.role" :options="['Admin', 'User', 'Editor']" placeholder="Select Role"
-              class="w-full" :disabled="!isEditing" />
+            <Select id="role" v-model="form.role" :options="roles" placeholder="Select Role" class="w-full"
+              option-label="name" :disabled="!isEditing" />
           </div>
 
           <!-- Status -->

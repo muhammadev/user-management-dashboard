@@ -97,8 +97,7 @@ const handleSubmit = () => {
       <!-- if updating user roles -->
       <div v-if="action === Action.EditRole" class="space-y-2">
         <label for="role">Change Users Roles</label>
-        <Select id="role" v-model="role" :options="roleStore.roles" class="w-full" option-label="name"
-          option-value="id" />
+        <Select id="role" v-model="role" :options="roleStore.roles" class="w-full" option-label="name" />
       </div>
 
       <!-- if updating user status -->

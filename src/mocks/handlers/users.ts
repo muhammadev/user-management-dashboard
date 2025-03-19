@@ -7,7 +7,7 @@ const delayInRange = Math.floor(Math.random() * (800 - 300 + 1)) + 300;
 
 type BulkUpdateRoleRequestBody = {
   ids: number[],
-  role: Role['id']
+  role: Role
 }
 
 type BulkUpdateStatusRequestBody = {
@@ -74,7 +74,7 @@ export const handlers = [
       });
     }
 
-    if (mockRoles.findIndex(r => r.id === role) === -1) {
+    if (mockRoles.findIndex(r => r.id === role.id) === -1) {
       return new HttpResponse(null, {
         status: 400,
       })
@@ -82,7 +82,7 @@ export const handlers = [
 
     mockUsers.forEach((user, i) => {
       if (ids.includes(user.id)) {
-        mockUsers[i].role.id = role;
+        mockUsers[i].role = role;
       }
     })
 
